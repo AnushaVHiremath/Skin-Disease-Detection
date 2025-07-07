@@ -1,4 +1,4 @@
-# Skin-Disease-Detection
+Skin-Disease-Detection
 A CNN-based deep learning model that detects skin diseases from images with high accuracy.
 
 Project Title
@@ -15,7 +15,7 @@ Features
 
 * Image classification using CNN
 * Real-time disease prediction
-* Trained on labeled dataset with high accuracy (\~90%)
+* Trained on labeled dataset with high accuracy (~90%)
 * User-friendly interface (optional: Streamlit or Flask)
 * Data augmentation for better generalization
 
@@ -57,7 +57,7 @@ How to Run
    python train.py
    
 
-3. Run the web app (if any):
+3. Run the web app:
 
    bash
    streamlit run app.py
@@ -77,13 +77,17 @@ Results
 
 
  Sample Output
-![Skin Disease Prediction](images/prediction_output.png)
+  
+[Skin Disease Prediction](images/prediction_output.png)]
+
 
 
 Dataset
 This project uses a publicly available skin disease image dataset from the internet for training and evaluation.
 
-Dataset Name: HAM10000 / DermNet 
+Dataset Name: HAM10000 / Kaggle Link 
+Dataset Source: [Kaggle Link: HAM10000 Dataset](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
+
 
 Description: The dataset contains high-resolution dermatoscopic images of skin lesions classified into different categories such as melanoma, benign nevi, and more.
 
