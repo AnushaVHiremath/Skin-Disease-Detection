@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #image {
+            max-width: 100%;
+            max-height: 400px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        #fileInput {
+            margin-bottom: 20px;
+        }
+        #detectButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #detectButton:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .result-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .result-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .prediction-details {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Skin Disease Detection</h1>
+        <input type="file" id="fileInput" accept="image/*">
+        <div class="image-preview" id="imagePreview">
+            <img id="image" alt="Image Preview">
+        </div>
+        <button id="detectButton" type="button">Analyze Skin</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Image preview functionality
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const image = document.getElementById('image');
+                    image.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Detection functionality
+        document.getElementById('detectButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const resultDiv = document.getElementById('result');
+
+            if (!file) {
+                alert("Please upload an image first.");
+                return;
+            }
+
+            // Clear previous results
+            resultDiv.innerHTML = '';
+
+            // Show loading state
+            resultDiv.innerHTML = '<p>Analyzing image...</p>';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check for errors
+                if (data.error) {
+                    resultDiv.innerHTML = `<div class="result-section">Error: ${data.error}</div>`;
+                    return;
+                }
+
+                // Validate prediction confidence
+                const diseaseConfidence = data.disease.top_prob;
+                const skinTypeConfidence = data.skin_type.top_prob;
+
+                // Create detailed results
+                resultDiv.innerHTML = `
+                    <div class="result-section">
+                        <div class="result-label">Disease Detection</div>
+                        <div>Top Class: ${data.disease.top_class}</div>
+                        <div>Probability: ${data.disease.top_prob}%</div>
+                        <details class="prediction-details">
+                            <summary>View All Predictions</summary>
+                            ${Object.entries(data.disease.all_predictions)
+                                .map(([className, prob]) => `${className}: ${prob}%`)
+                                .join('<br>')}
+                        </details>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-label">Skin Type</div>
+                        <div>Skin Type: ${data.skin_type.top_class}</div>
+                    </div>
+                `;
+
+                // Optional: Add confidence validation
+           
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<div class="result-section">Error: ${error.message}</div>`;
+            });
+        });
+    </script>
+</body>
+</html>
