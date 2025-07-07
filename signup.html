@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <style>
+            h1{
+                font-size: 50px;
+                font-style: normal;
+                color: black;
+                text-shadow: 0px 0px 2px black;
+                
+            }
+            body{
+                
+                background: url('bg.jpeg');
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            div{
+                margin-top: 200px;
+                border: 2px solid;
+                width: 350px;
+                height: 350px;
+                backdrop-filter: blur(8px);
+                
+            }
+            input{
+                background: transparent;
+            }
+            input::placeholder{
+                color: black;
+                font-size: 10px;
+            }
+
+            button{
+                border-radius: 5px;
+                background-color: rgb(111, 111, 228);
+                cursor: pointer; 
+            }
+            label{
+                margin-right: 7px;
+            }
+            a{
+                color:blue;
+            }
+        
+        </style>
+    </head>
+    <body >
+        <center><div>
+        <h1>Signup</h1>
+        <label for="flname"> FullName</label>
+        <input type="text" name=" flname" id="flname"  placeholder="Enter FullName"><br><br>
+        <label for="uname">Username</label>
+        <input type="text" name="uname" id="uname" placeholder="Enter username"><br><br>
+        <label for="password"> Password</label>
+        <input type="password" name="pass" id="pass" placeholder="Enter password"><br><br>
+        <label for="conpass"> Confirm Password</label>
+        <input type="pass" name="pass" id="pass" placeholder="Confirm Password"><br><br>
+        <button onclick="alert('signup sucessfull')" > Submit</button><br><br>
+        <label for="acc">Already have an account</label><a href="login.html">Login</a>
+    </div>
+    </center>
+    </body>
+</html>
